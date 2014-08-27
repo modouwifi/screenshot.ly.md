@@ -1,11 +1,18 @@
 require "sinatra"
+require "tzinfo"
 
 post '/screenshot' do
-  File.open(File.expand_path('../tmp/tmp.dat', __FILE__), 'wb') do |file|
+  time = TZInfo::Timezone.get('Asia/Shanghai').now.strftime('%Y%m%d%H%M%S')
+
+  tempfile = "#{time}-#{SecureRandom.hex}"
+
+  filepath = File.expand_path("../tmp/#{tempfile}.dat", __FILE__)
+
+  File.open(filepath, 'wb') do |file|
     file.write(params[:data][:tempfile].read)
   end
 
-  `yes | ffmpeg -vcodec rawvideo -f rawvideo -pix_fmt rgb565 -s 320x240 -i tmp/tmp.dat -f image2 -vcodec png tmp/screenshot.png`
+  `yes | ffmpeg -vcodec rawvideo -f rawvideo -pix_fmt rgb565 -s 320x240 -i tmp/#{tempfile}.dat -f image2 -vcodec png tmp/#{tempfile}.png`
 
-  send_file 'tmp/screenshot.png'
+  send_file "tmp/#{tempfile}.png"
 end
