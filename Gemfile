@@ -8,4 +8,5 @@ gem 'tzinfo'
 
 group :development do
   gem 'shotgun'
+  gem 'dotenv'
 end
