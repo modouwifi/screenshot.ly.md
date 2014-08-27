@@ -4,8 +4,6 @@ require "tzinfo"
 configure :development do
   require "dotenv"
   Dotenv.load
-
-  `qboxrsctl login #{ENV['QINIU_ACCESS_KEY']} #{ENV['QINIU_SECRET_KEY']}`
 end
 
 post '/screenshot' do
@@ -20,6 +18,8 @@ post '/screenshot' do
   end
 
   `yes | ffmpeg -vcodec rawvideo -f rawvideo -pix_fmt rgb565 -s 320x240 -i tmp/#{tempfile}.dat -f image2 -vcodec png tmp/#{tempfile}.png`
+
+  `qboxrsctl login #{ENV['QINIU_ACCESS_KEY']} #{ENV['QINIU_SECRET_KEY']}`
 
   `qboxrsctl put #{ENV['QINIU_BUCKET']} #{tempfile}.png tmp/#{tempfile}.png`
 
