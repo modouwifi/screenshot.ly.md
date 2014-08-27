@@ -1,9 +1,5 @@
 require "sinatra"
 
-get '/hello_world' do
-  'hello world'
-end
-
 post '/screenshot' do
   File.open(File.expand_path('../tmp/tmp.dat', __FILE__), 'wb') do |file|
     file.write(params[:data][:tempfile].read)
