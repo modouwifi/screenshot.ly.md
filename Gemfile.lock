@@ -5,6 +5,7 @@ GEM
       dotenv-deployment (~> 0.0.2)
     dotenv-deployment (0.0.2)
     kgio (2.8.0)
+    newrelic_rpm (3.9.0.229)
     rack (1.5.2)
     rack-protection (1.5.3)
       rack
@@ -29,6 +30,7 @@ PLATFORMS
 
 DEPENDENCIES
   dotenv
+  newrelic_rpm
   shotgun
   sinatra
   tzinfo

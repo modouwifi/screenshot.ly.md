@@ -6,6 +6,10 @@ configure :development do
   Dotenv.load
 end
 
+configure :production do
+  require "newrelic_rpm"
+end
+
 post '/screenshot' do
   time = TZInfo::Timezone.get('Asia/Shanghai').now.strftime('%Y%m%d%H%M%S')
 
