@@ -6,6 +6,7 @@ gem 'sinatra'
 gem 'unicorn'
 gem 'tzinfo'
 gem 'newrelic_rpm'
+gem 'qiniu'
 
 group :development do
   gem 'shotgun'

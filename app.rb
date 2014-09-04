@@ -8,6 +8,10 @@ end
 
 configure :production do
   require "newrelic_rpm"
+
+  require "qiniu"
+
+  Qiniu.establish_connection! access_key: ENV['QINIU_ACCESS_KEY'], secret_key: ENV['QINIU_SECRET_KEY']
 end
 
 post '/screenshot' do
@@ -25,7 +29,9 @@ post '/screenshot' do
 
   `qboxrsctl login #{ENV['QINIU_ACCESS_KEY']} #{ENV['QINIU_SECRET_KEY']}`
 
-  `qboxrsctl put #{ENV['QINIU_BUCKET']} #{tempfile}.png tmp/#{tempfile}.png`
+  `qboxrsctl put #{ENV['QINIU_BUCKET']} screenshots/#{tempfile}.png tmp/#{tempfile}.png`
 
-  send_file "tmp/#{tempfile}.png"
+  primitive_url = "http://#{ENV['QINIU_BUCKET']}.qiniudn.com/screenshots/#{tempfile}.png"
+
+  redirect Qiniu::Auth.authorize_download_url(primitive_url)
 end
