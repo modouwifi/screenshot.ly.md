@@ -1,4 +1,5 @@
 require "sinatra"
+require "sinatra/json"
 require "tzinfo"
 
 configure :development do
@@ -33,5 +34,6 @@ post '/screenshot' do
 
   primitive_url = "http://#{ENV['QINIU_BUCKET']}.qiniudn.com/screenshots/#{tempfile}.png"
 
-  redirect Qiniu::Auth.authorize_download_url(primitive_url)
+  status 201
+  json status: 'OK', url: Qiniu::Auth.authorize_download_url(primitive_url)
 end
